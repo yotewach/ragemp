@@ -102,13 +102,13 @@ Of course! the project is open source and anyone can contribute, just fork and p
 
 # Contributing
 
-1. Siga os passos para abrir o servidor local.
+1. Follow the steps to open the local server..
 2. Instale o NodeJS, NPM, Typescript e o Angular CLI.
      
      - NodeJS: https://nodejs.org/en/download/
      - NPM: https://docs.npmjs.com/cli/install
-     - Typescript: Basta executar o comando ```npm i typescript -g```.
-     - Angular CLI: Basta executar o comando ```npm i @angular/cli -g```.
+     - Typescript: Just Run Command ```npm i typescript -g```.
+     - Angular CLI: Just Run Command ```npm i @angular/cli -g```.
 3. Install package:
     > npm install
     
