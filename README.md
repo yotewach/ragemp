@@ -4,43 +4,43 @@
     <td><img src="https://github.com/brazucas/ragemp/raw/master/demo/demo4.png" width="300px"/></td>
 </table>
 
-# Histórico
+# Historical
 
-##### Sobre o Brazuca's
+##### About Brazuca's
 
-O Brazuca's é um servidor de jogo de uma modificação do jogo Grand Theft Auto: San Andreas chamado SA-MP (San Andreas Multiplayer), que permite que qualquer pessoa crie seu próprio servidor do jogo e outras pessoas possam jogar nele, utilizando uma API fornecida pelos desenvolvedores do mod. Mais informações em http://sa-mp.com. O Brazuca's surgiu em 2006 e passou por altos e baixos, até que em meados de 2014 passou a ficar praticamente sem jogadores.
+Brazuca's is a game server from a Grand Theft Auto: San Andreas game modification called SA-MP (San Andreas Multiplayer), which allows anyone to create their own game server and others to play on it using a provided API by the developers of mod. More information at http://sa-mp.com. Brazuca's started in 2006 and went through ups and downs, until mid-2014 it was almost without players.
 
-O RageMP (Modificação do jogo GTA: V, que basicamente segue a mesma ideia do SA-MP) é a aposta do Brazuca's para continuar sendo um servidor de GTA popular, nosso objetivo é oferecer a melhor experiência de jogo possível, tanto para jogadores casuais como hardcore.
+RageMP (GTA: V Game Modification, which basically follows the same idea as SA-MP) is Brazuca's bet to remain a popular GTA server, our goal is to provide the best possible gaming experience for both casual players. as hardcore.
 
-##### Porque não o GTA Network?
-Nós iniciamos um projeto lá, mas depois de alguns meses houve um anúncio basicamente dizendo que o GTA Network seria integrado ao RageMP.
+##### Why not GTA Network?
+We started a project there, but after a few months there was an announcement basically saying that GTA Network would be integrated with RageMP.
 
-##### Expectativas
+##### Expectations
 
-Nós não daremos dicas, anúncios ou data de lançamento enquanto o servidor não estiver completamente jogável. Tudo relacionamento ao desenvolvimento do servidor estará disponível apenas nesse repositório do GitHUB, sinta-se a vontade para fazer um fork ou "watch" no projeto.
+We will not give tips, announcements or release date until the server is fully playable. All server development relationships will only be available in this GitHUB repository, feel free to fork or "watch" the project..
 
-##### Código-Aberto?
+##### Open Code?
 
-Nós manteremos o código aberto até o anúncio oficial da abertura do servidor, ou até mesmo depois disso.
+We will keep the open source until the official server opening announcement, or even after that.
 
 ##### Objetivo inicial
 
-A primeira versão do servidor irá contemplar o RPG e os Minigames, nossa ideia, diferente de como era no SA-MP, é manter o servidor online 24/7 no mesmo modo de jogo. 
+The first version of the server will include RPG and Minigames, our idea, unlike SA-MP, is to keep the server online 24/7 in the same game mode.. 
 
-##### Posso entrar no time de testes?
-Atualmente nosso time de testes está cheio.
+##### Can I join the testing team?
+Currently our testing team is full.
 
-##### Posso entrar no time de desenvolvimento?
+##### Can I join the development team?
 
-Claro! o projeto é de código aberto e qualquer um pode contribuir, basta fazer um fork e pull requests.
+Of course! the project is open source and anyone can contribute, just fork and pull requests.
 
-# Abrindo o servidor local
+# Opening the local server
 
-1. Faça clone do projeto.
-2. Faça uma cópia do arquivo ```conf.json.dist``` para ```conf.json```.
-3. Abra as portas 22005/udp e 22006 no seu firewall.
-4. Baixe e instale o Docker: https://docs.docker.com/install/
-5. Crie um arquivo chamado ragemp.yml com o seguinte conteúdo:
+1. Clone the project.
+2. Make a copy of the `` `conf.json.dist``` file to` `` conf.json```.
+3. Open ports 22005 / udp and 22006 on your firewall..
+4. Download and install Docker: https://docs.docker.com/install/
+5. Create a file called ragemp.yml with the following content:
     ```
     version: "3.2"
        
@@ -86,21 +86,21 @@ Claro! o projeto é de código aberto e qualquer um pode contribuir, basta fazer
          ragemp:
     ```
 
-6. Execute o arquivo utilizando o seguinte comando:
+6. Run the file using the following command::
     > docker stack deploy -c /caminho/para/ragemp.yml ragemp
     
-     Aguarde alguns minutos para que o Docker baixe as imagens e suba os containers.
+     Wait a few minutes for Docker to download images and upload containers.
     
-7. Comandos úteis
-    - Iniciar servidor: ```docker start ragemp_server```.
-    - Parar servidor: ```docker stop ragemp_server```.
+7. Useful commands
+    - Start server: ```docker start ragemp_server```.
+    - Stop server: ```docker stop ragemp_server```.
     - Reiniciar servidor: ```docker restart ragemp_server```.
-    - Logs do servidor: ```docker service logs ragemp_server -f```.
-    - Destruir o stack: ```docker stack rm ragemp```.
+    - Restart server: ```docker service logs ragemp_server -f```.
+    - Destroy the stack: ```docker stack rm ragemp```.
 
-8. Acesse o servidor pelo RageMP utilizando a opção "Direct Connect", com o IP do seu computador.
+8. Access the server through RageMP using the "Direct Connect" option with your computer's IP.
 
-# Contribuindo
+# Contributing
 
 1. Siga os passos para abrir o servidor local.
 2. Instale o NodeJS, NPM, Typescript e o Angular CLI.
@@ -109,23 +109,23 @@ Claro! o projeto é de código aberto e qualquer um pode contribuir, basta fazer
      - NPM: https://docs.npmjs.com/cli/install
      - Typescript: Basta executar o comando ```npm i typescript -g```.
      - Angular CLI: Basta executar o comando ```npm i @angular/cli -g```.
-3. Faça instalação dos pacotes:
+3. Install package:
     > npm install
     
-4. Para os passos a seguir, tenha como base que você esteja na pasta do projeto, e preste atenção na instrução "Mantenha uma sessão do terminal aberta".
-5. Mantenha uma sessão do terminal aberta com o seguinte comando executando:
+4. For the following steps, assume you are in the project folder, and pay attention to the "Keep a terminal session open" statement.
+5. Keep a terminal session open with the following command by running:
     > tsc -w
     
-    Este comando irá compilar os arquivos ```.ts``` para ```.js``` a medida que são alterados.
-6. Para qualquer alteração na pasta ```browser```:
-    - Navegue até a pasta ```browser```:
+   This command will compile the `` `.ts``` files to` `` .js``` as they change.
+6. For any changes to the folder ```browser```:
+    - Browse to folder ```browser```:
         > cd browser
-    - Compile o index.ts: (ignore qualquer erro apresentado)
+    - Compile index.ts: (ignore any errors displayed)
         > tsc index.ts
-    - Construa o projeto:
+    - Build the project:
         > ng build --output-path=../client_packages/browser/ --prod
 
-7. Para desenvolver as telas do navegador, navegue até a pasta ```browser``` e execute o seguinte comando:
+7. To develop browser screens, navigate to the `` `browser``` folder and run the following command:
     > ng serve
     
-    Acesse o link: http://localhost:4200/ para acessar o projeto. A página de login, por exemplo, pode ser vista em: http://localhost:4200/#/login. 
+    Visit the link: http: // localhost: 4200 / to access the project. The login page, for example, can be viewed at: http: // localhost: 4200 / # / login. 
