@@ -8,7 +8,7 @@ export function EnumToArray(enumme) {
     .map(key => enumme[key]);
 }
 
-export function soNumeros(texto: string) {
+export function onlyNumbers(texto: string) {
   return texto.replace(/\D/g, '');
 }
 

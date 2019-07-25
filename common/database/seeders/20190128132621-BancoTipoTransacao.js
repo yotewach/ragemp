@@ -2,18 +2,18 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('BancoTipoTransacao', [{
+    return queryInterface.bulkInsert('BankTypeTransaction', [{
       id: '1',
-      nome: 'Crédito',
-      identificador: 'credito',
-      dataCriado: new Date(),
-      dataAtualizado: new Date(),
+      name: 'Credit',
+      identifier: 'credit',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
     }, {
       id: '2',
-      nome: 'Débito',
-      identificador: 'debito',
-      dataCriado: new Date(),
-      dataAtualizado: new Date(),
+      name: 'Debit',
+      identifier: 'debit',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
     }], {});
   },
 

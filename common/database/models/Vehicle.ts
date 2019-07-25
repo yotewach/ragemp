@@ -1,90 +1,90 @@
 import { BelongsTo, Column, DataType, Model, Table } from 'sequelize-typescript';
-import { Jogador } from './Jogador';
+import { Player } from './Player';
 
 @Table({
   timestamps: true,
-  createdAt: 'dataCriado',
-  deletedAt: 'dataExcluido',
-  updatedAt: 'dataAtualizado',
+  createdAt: 'dateCreated',
+  deletedAt: 'dataDeleted',
+  updatedAt: 'dateUpdated',
   paranoid: true,
   indexes: [
     {
       unique: true,
-      fields: ['placaOriginal', 'placaExibido'],
+      fields: ['originalBoard', 'boardDisplayed'],
     }
   ]
 })
-export class Veiculo extends Model<Veiculo> {
+export class Vehicle extends Model<Vehicle> {
 
   @Column({allowNull: false})
-  placaOriginal: string;
+  originalBoard: string;
 
   @Column({allowNull: false})
-  placaExibido: string;
+  boardDisplayed: string;
 
   @Column({allowNull: false})
-  modelo: string;
+  model: string;
 
   @Column({allowNull: false, type: DataType.STRING})
-  posicaoX: string;
+  positionX: string;
 
   @Column({allowNull: false, type: DataType.STRING})
-  posicaoY: string;
+  positionY: string;
 
   @Column({allowNull: false, type: DataType.STRING})
-  posicaoZ: string;
+  positionZ: string;
 
   @Column({allowNull: false, type: DataType.STRING})
-  posicaoOriginalX: string;
+  originalPositionX: string;
 
   @Column({allowNull: false, type: DataType.STRING})
-  posicaoOriginalY: string;
+  originalPositionY: string;
 
   @Column({allowNull: false, type: DataType.STRING})
-  posicaoOriginalZ: string;
+  originalPositionZ: string;
 
   @Column({allowNull: false})
-  rotacao: number;
+  rotation: number;
 
   @Column({allowNull: false})
-  transparencia: number;
+  transparency: number;
 
   @Column({allowNull: false})
-  corPrimariaR: number;
+  colorPrimaryR: number;
 
   @Column({allowNull: false})
-  corPrimariaG: number;
+  colorPrimaryG: number;
 
   @Column({allowNull: false})
-  corPrimariaB: number;
+  colorPrimaryB: number;
 
   @Column({allowNull: false})
-  corSecundariaR: number;
+  colorSecondaryR: number;
 
   @Column({allowNull: false})
-  corSecundariaG: number;
+  colorSecondaryG: number;
 
   @Column({allowNull: false})
-  corSecundariaB: number;
+  colorSecondaryB: number;
 
   @Column({allowNull: false, defaultValue: true})
-  trancado: boolean;
+  locked: boolean;
 
   @Column({allowNull: false, defaultValue: false})
   motor: boolean;
 
   @Column({allowNull: false, defaultValue: 1})
-  mundo: number;
+  world: number;
 
   @Column({allowNull: false})
-  valorOriginal: number;
+  originalValue: number;
 
   @Column({allowNull: false})
-  valorVenda: number;
+  saleValue: number;
 
   @Column({allowNull: false, defaultValue: true})
-  aVenda: boolean;
+  forSale: boolean;
 
-  @BelongsTo(() => Jogador, {foreignKey: {allowNull: true, name: 'jogador'}})
-  jogadorVeiculo: Jogador;
+  @BelongsTo(() => Player, {foreignKey: {allowNull: true, name: 'player'}})
+  playerVehicle: Player;
 }

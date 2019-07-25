@@ -1,30 +1,30 @@
 import { BrazucasServer } from '../../../common/brazucas-server';
-import { Jogador } from '../../../common/database/models/Jogador';
+import { Player } from '../../../common/database/models/Player';
 import { BrazucasEventos } from '../interfaces/brazucas-eventos';
 import { notificarTodos, playerEvent } from '../lib/functions/player';
 import { Rpg } from '../rpg';
 
 export function PlayerJoinHandler(brazucasServer: BrazucasServer, player: PlayerMp) {
-  console.debug(`[ENTRADA] ${player.name} entrou no servidor (${player.ip})`);
+  console.debug(`[ENTER] ${player.name} entered the server (${player.ip})`);
 
-  notificarTodos(`~y~${player.name} ~w~entrou no servidor`);
+  notificarTodos(`~y~${player.name} ~w~entered the server`);
 
   const subscribe = brazucasServer.isReady.subscribe(async () => {
-    const jogador = await brazucasServer.loadPlayer(player.name);
+    const playerProfile = await brazucasServer.loadPlayer(player.name);
 
-    if (jogador) {
-      console.debug(`[LOAD PLAYER] Jogador ${jogador.nome} carregado`);
+    if (playerProfile) {
+      console.debug(`[LOAD PLAYER] Player ${playerProfile.name} loaded`);
     } else {
-      console.debug('[LOAD PLAYER] Jogador não encontrado');
+      console.debug('[LOAD PLAYER] Player not found');
     }
 
 
     Rpg.playerProvider.addPlayer({
       mp: player,
-      storage: jogador,
+      storage: playerProfile,
     });
 
-    playerEvent<Jogador>(player, BrazucasEventos.DADOS_JOGADOR, jogador.toJSON());
+    playerEvent<Player>(player, BrazucasEventos.DADOS_JOGADOR, playerProfile.toJSON());
     subscribe.unsubscribe();
   });
 }

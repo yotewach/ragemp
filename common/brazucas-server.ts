@@ -7,8 +7,8 @@ import * as Sequelize from 'sequelize';
 import { DadosVeiculo } from '../browser/src/app/services/veiculo.service';
 import { DadosRegistro } from '../browser/src/interfaces/login.interface';
 import { Database } from './database/database';
-import { Jogador } from './database/models/Jogador';
-import { Veiculo } from './database/models/Veiculo';
+import { Jogador } from './database/models/Player';
+import { Veiculo } from './database/models/Vehicle';
 import { PLAYER_NAME_MAXLENGTH, PLAYER_NAME_MINLENGTH, PLAYER_NAME_REGEXP } from './interfaces';
 import { bcryptCompare, bcryptHash, hexToRgb, soNumeros } from './util/util';
 import { Veiculos } from './util/vehicles';
@@ -47,7 +47,7 @@ export class BrazucasServer {
     const jogador = await this.loadPlayer(playerName);
 
     if (!jogador) {
-      throw 'Jogador não encontrado';
+      throw 'Player not found';
     }
 
     const autenticado = await bcryptCompare(senha, jogador.senha);
@@ -56,17 +56,17 @@ export class BrazucasServer {
   }
 
   public async registrarJogador(player: PlayerMp, dados: DadosRegistro): Promise<Jogador> {
-    console.debug(`[REGISTRO] Novo jogador ${player.name}`);
+    console.debug(`[REGISTRATION] New Player ${player.name}`);
 
     if (
       !dados.senhaConfirma || !dados.senha || !dados.celular || !dados.email ||
       !dados.senhaConfirma.length || !dados.senha.length || !dados.celular.length || !dados.email.length
     ) {
-      throw 'Todos os campos devem ser informados';
+      throw 'All fields must be entered.';
     }
 
     if (dados.senha !== dados.senhaConfirma) {
-      throw 'As senhas informadas diferem';
+      throw 'Passwords entered differ';
     }
 
     const playerNameClean = PLAYER_NAME_REGEXP.exec(player.name);
@@ -77,16 +77,16 @@ export class BrazucasServer {
       player.name.length < PLAYER_NAME_MINLENGTH ||
       player.name.length > PLAYER_NAME_MAXLENGTH
     ) {
-      throw 'Nick não permitido';
+      throw 'Name is not allowed';
     }
 
     const jogadorExistente = await this.loadPlayer(player.name);
 
     if (jogadorExistente) {
-      throw 'Já existe um jogador cadastrado com esse nick';
+      throw 'There is already a registered player with this nickname';
     }
 
-    console.debug(`[REGISTRO] Criando jogador ${player.name}`);
+    console.debug(`[REGISTRATION] Creating player ${player.name}`);
 
     const senhaHash = await bcryptHash(dados.senha);
 
@@ -101,59 +101,59 @@ export class BrazucasServer {
     return jogador.save();
   }
 
-  public async criarVeiculo(player: PlayerMp, dadosVeiculo: DadosVeiculo): Promise<any> {
-    console.debug(`[CRIAR VEICULO] Novo veículo criado por ${player.name}`);
+  public async criarVeiculo(player: PlayerMp, dataVehicle: DadosVeiculo): Promise<any> {
+    console.debug(`[CREATE VEHICLE] New vehicle created by ${player.name}`);
 
-    if (!Veiculos[dadosVeiculo.modelo]) {
-      throw 'Modelo não encontrado';
+    if (!Veiculos[dataVehicle.modelo]) {
+      throw 'Model not found';
     }
 
-    const rgbPrimaria = hexToRgb(dadosVeiculo.corPrimaria);
-    const rgbSecundaria = hexToRgb(dadosVeiculo.corSecundaria);
+    const rgbPrimaria = hexToRgb(dataVehicle.corPrimaria);
+    const rgbSecundaria = hexToRgb(dataVehicle.corSecundaria);
 
     const jogador = await this.loadPlayer(player.name);
 
     if (!jogador) {
-      throw 'Jogador não encontrado';
+      throw 'Player not found';
     }
 
-    const veiculo = new Veiculo({
-      placaOriginal: dadosVeiculo.placa,
-      placaExibido: dadosVeiculo.placa,
-      modelo: dadosVeiculo.modelo,
-      posicaoX: dadosVeiculo.posicaoX,
-      posicaoY: dadosVeiculo.posicaoY,
-      posicaoZ: dadosVeiculo.posicaoZ,
-      posicaoOriginalX: dadosVeiculo.posicaoX,
-      posicaoOriginalY: dadosVeiculo.posicaoY,
-      posicaoOriginalZ: dadosVeiculo.posicaoZ,
+    const vehicle = new Veiculo({
+      placaOriginal: dataVehicle.placa,
+      placaExibido: dataVehicle.placa,
+      modelo: dataVehicle.modelo,
+      posicaoX: dataVehicle.posicaoX,
+      posicaoY: dataVehicle.posicaoY,
+      posicaoZ: dataVehicle.posicaoZ,
+      posicaoOriginalX: dataVehicle.posicaoX,
+      posicaoOriginalY: dataVehicle.posicaoY,
+      posicaoOriginalZ: dataVehicle.posicaoZ,
       rotacao: 0,
-      transparencia: dadosVeiculo.transparencia,
+      transparencia: dataVehicle.transparencia,
       corPrimariaR: rgbPrimaria.r,
       corPrimariaG: rgbPrimaria.g,
       corPrimariaB: rgbPrimaria.b,
       corSecundariaR: rgbSecundaria.r,
       corSecundariaG: rgbSecundaria.g,
       corSecundariaB: rgbSecundaria.b,
-      trancado: dadosVeiculo.trancado,
-      motor: dadosVeiculo.motor,
+      trancado: dataVehicle.trancado,
+      motor: dataVehicle.motor,
       mundo: 0,
-      valorOriginal: dadosVeiculo.valorOriginal,
-      valorVenda: dadosVeiculo.valorVenda,
-      aVenda: dadosVeiculo.aVenda,
+      valorOriginal: dataVehicle.valorOriginal,
+      valorVenda: dataVehicle.valorVenda,
+      aVenda: dataVehicle.aVenda,
       jogadorVeiculo: jogador,
     });
 
-    await veiculo.save();
+    await vehicle.save();
 
-    const veiculoMp = mp.vehicles.new(Veiculos[dadosVeiculo.modelo],
-      new mp.Vector3(parseFloat(dadosVeiculo.posicaoX), parseFloat(dadosVeiculo.posicaoY), parseFloat(dadosVeiculo.posicaoZ)));
+    const veiculoMp = mp.vehicles.new(Veiculos[dataVehicle.modelo],
+      new mp.Vector3(parseFloat(dataVehicle.posicaoX), parseFloat(dataVehicle.posicaoY), parseFloat(dataVehicle.posicaoZ)));
 
-    veiculoMp.engine = dadosVeiculo.motor;
-    veiculoMp.locked = dadosVeiculo.trancado;
+    veiculoMp.engine = dataVehicle.motor;
+    veiculoMp.locked = dataVehicle.trancado;
     veiculoMp.setColorRGB(rgbPrimaria.r, rgbPrimaria.g, rgbPrimaria.b, rgbSecundaria.r, rgbSecundaria.g, rgbSecundaria.b);
-    veiculoMp.numberPlate = dadosVeiculo.placa;
-    veiculoMp.alpha = dadosVeiculo.transparencia;
+    veiculoMp.numberPlate = dataVehicle.placa;
+    veiculoMp.alpha = dataVehicle.transparencia;
 
     veiculoMp.spawn(veiculoMp.position, 0);
 

@@ -4,7 +4,7 @@ FROM debian:jessie
 
 ENV RAGEMP 0.3.5
 
-MAINTAINER Disinterpreter "disinterpreter@protonmail.ch" & Pedro Papadópolis
+MAINTAINER Yote "yote.w@nellika.co.th"
 
 EXPOSE 20005
 EXPOSE 22005/udp

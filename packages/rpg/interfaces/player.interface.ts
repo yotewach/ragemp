@@ -1,6 +1,6 @@
-import { Jogador } from '../../../common/database/models/Jogador';
+import { Player } from '../../../common/database/models/Player';
 
 export interface BRZPlayerInterface {
   mp: PlayerMp;
-  storage: Jogador;
+  storage: Player;
 }

@@ -43,90 +43,90 @@ class BrazucasServer {
         return __awaiter(this, void 0, void 0, function* () {
             const jogador = yield this.loadPlayer(playerName);
             if (!jogador) {
-                throw 'Jogador não encontrado';
+                throw 'Player not found';
             }
             const autenticado = yield util_1.bcryptCompare(senha, jogador.senha);
             return autenticado ? jogador : null;
         });
     }
-    registrarJogador(player, dados) {
+    registrarJogador(player, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.debug(`[REGISTRO] Novo jogador ${player.name}`);
-            if (!dados.senhaConfirma || !dados.senha || !dados.celular || !dados.email ||
-                !dados.senhaConfirma.length || !dados.senha.length || !dados.celular.length || !dados.email.length) {
-                throw 'Todos os campos devem ser informados';
+            console.debug(`[REGISTRATION] New Player ${player.name}`);
+            if (!data.senhaConfirma || !data.senha || !data.celular || !data.email ||
+                !data.senhaConfirma.length || !data.senha.length || !data.celular.length || !data.email.length) {
+                throw 'All fields must be entered.';
             }
-            if (dados.senha !== dados.senhaConfirma) {
-                throw 'As senhas informadas diferem';
+            if (data.senha !== data.senhaConfirma) {
+                throw 'Passwords entered differ';
             }
             const playerNameClean = interfaces_1.PLAYER_NAME_REGEXP.exec(player.name);
             if (!playerNameClean ||
                 (playerNameClean[1].length !== player.name.length) ||
                 player.name.length < interfaces_1.PLAYER_NAME_MINLENGTH ||
                 player.name.length > interfaces_1.PLAYER_NAME_MAXLENGTH) {
-                throw 'Nick não permitido';
+                throw 'Name not allowed';
             }
             const jogadorExistente = yield this.loadPlayer(player.name);
             if (jogadorExistente) {
-                throw 'Já existe um jogador cadastrado com esse nick';
+                throw 'There is already a registered player with this nickname';
             }
-            console.debug(`[REGISTRO] Criando jogador ${player.name}`);
-            const senhaHash = yield util_1.bcryptHash(dados.senha);
+            console.debug(`[REGISTRATION] Creating player ${player.name}`);
+            const senhaHash = yield util_1.bcryptHash(data.senha);
             const jogador = new Jogador_1.Jogador({
                 nome: player.name,
                 senha: senhaHash,
                 nivel: 1,
-                email: dados.email,
-                celular: util_1.soNumeros(dados.celular),
+                email: data.email,
+                celular: util_1.soNumeros(data.celular),
             });
             return jogador.save();
         });
     }
-    criarVeiculo(player, dadosVeiculo) {
+    criarVeiculo(player, dataVehicle) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.debug(`[CRIAR VEICULO] Novo veículo criado por ${player.name}`);
-            if (!vehicles_1.Veiculos[dadosVeiculo.modelo]) {
-                throw 'Modelo não encontrado';
+            console.debug(`[CREATE VEHICLE] New vehicle created by ${player.name}`);
+            if (!vehicles_1.Veiculos[dataVehicle.modelo]) {
+                throw 'Model not found';
             }
-            const rgbPrimaria = util_1.hexToRgb(dadosVeiculo.corPrimaria);
-            const rgbSecundaria = util_1.hexToRgb(dadosVeiculo.corSecundaria);
+            const rgbPrimaria = util_1.hexToRgb(dataVehicle.corPrimaria);
+            const rgbSecundaria = util_1.hexToRgb(dataVehicle.corSecundaria);
             const jogador = yield this.loadPlayer(player.name);
             if (!jogador) {
-                throw 'Jogador não encontrado';
+                throw 'Player not found';
             }
             const veiculo = new Veiculo_1.Veiculo({
-                placaOriginal: dadosVeiculo.placa,
-                placaExibido: dadosVeiculo.placa,
-                modelo: dadosVeiculo.modelo,
-                posicaoX: dadosVeiculo.posicaoX,
-                posicaoY: dadosVeiculo.posicaoY,
-                posicaoZ: dadosVeiculo.posicaoZ,
-                posicaoOriginalX: dadosVeiculo.posicaoX,
-                posicaoOriginalY: dadosVeiculo.posicaoY,
-                posicaoOriginalZ: dadosVeiculo.posicaoZ,
+                placaOriginal: dataVehicle.placa,
+                placaExibido: dataVehicle.placa,
+                modelo: dataVehicle.modelo,
+                posicaoX: dataVehicle.posicaoX,
+                posicaoY: dataVehicle.posicaoY,
+                posicaoZ: dataVehicle.posicaoZ,
+                posicaoOriginalX: dataVehicle.posicaoX,
+                posicaoOriginalY: dataVehicle.posicaoY,
+                posicaoOriginalZ: dataVehicle.posicaoZ,
                 rotacao: 0,
-                transparencia: dadosVeiculo.transparencia,
+                transparencia: dataVehicle.transparencia,
                 corPrimariaR: rgbPrimaria.r,
                 corPrimariaG: rgbPrimaria.g,
                 corPrimariaB: rgbPrimaria.b,
                 corSecundariaR: rgbSecundaria.r,
                 corSecundariaG: rgbSecundaria.g,
                 corSecundariaB: rgbSecundaria.b,
-                trancado: dadosVeiculo.trancado,
-                motor: dadosVeiculo.motor,
+                trancado: dataVehicle.trancado,
+                motor: dataVehicle.motor,
                 mundo: 0,
-                valorOriginal: dadosVeiculo.valorOriginal,
-                valorVenda: dadosVeiculo.valorVenda,
-                aVenda: dadosVeiculo.aVenda,
+                valorOriginal: dataVehicle.valorOriginal,
+                valorVenda: dataVehicle.valorVenda,
+                aVenda: dataVehicle.aVenda,
                 jogadorVeiculo: jogador,
             });
             yield veiculo.save();
-            const veiculoMp = mp.vehicles.new(vehicles_1.Veiculos[dadosVeiculo.modelo], new mp.Vector3(parseFloat(dadosVeiculo.posicaoX), parseFloat(dadosVeiculo.posicaoY), parseFloat(dadosVeiculo.posicaoZ)));
-            veiculoMp.engine = dadosVeiculo.motor;
-            veiculoMp.locked = dadosVeiculo.trancado;
+            const veiculoMp = mp.vehicles.new(vehicles_1.Veiculos[dataVehicle.modelo], new mp.Vector3(parseFloat(dataVehicle.posicaoX), parseFloat(dataVehicle.posicaoY), parseFloat(dataVehicle.posicaoZ)));
+            veiculoMp.engine = dataVehicle.motor;
+            veiculoMp.locked = dataVehicle.trancado;
             veiculoMp.setColorRGB(rgbPrimaria.r, rgbPrimaria.g, rgbPrimaria.b, rgbSecundaria.r, rgbSecundaria.g, rgbSecundaria.b);
-            veiculoMp.numberPlate = dadosVeiculo.placa;
-            veiculoMp.alpha = dadosVeiculo.transparencia;
+            veiculoMp.numberPlate = dataVehicle.placa;
+            veiculoMp.alpha = dataVehicle.transparencia;
             veiculoMp.spawn(veiculoMp.position, 0);
             return true;
         });

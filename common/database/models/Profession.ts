@@ -1,20 +1,20 @@
 import { Column, HasMany, Model, Table } from 'sequelize-typescript';
-import { Jogador } from './Jogador';
+import { Player } from './Player';
 
 @Table({
   timestamps: true,
-  createdAt: 'dataCriado',
-  deletedAt: 'dataExcluido',
-  updatedAt: 'dataAtualizado',
+  createdAt: 'dateCreated',
+  deletedAt: 'dataDeleted',
+  updatedAt: 'dateUpdated',
   paranoid: true,
   indexes: [
     {
       unique: true,
-      fields: ['nome'],
+      fields: ['name'],
     }
   ]
 })
-export class Profissao extends Model<Profissao> {
+export class Profession extends Model<Profession> {
 
   @Column({allowNull: false})
   nome: string;
@@ -28,6 +28,6 @@ export class Profissao extends Model<Profissao> {
   @Column({allowNull: false})
   salario: number;
 
-  @HasMany(() => Jogador, 'profissao')
-  jogadores: Jogador[];
+  @HasMany(() => Player, 'profession')
+  players: Player[];
 }
