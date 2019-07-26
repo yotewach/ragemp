@@ -1,20 +1,20 @@
-import { BrazucasServer } from '../../../../common/brazucas-server';
-import { VeiculoProvider } from '../../providers/veiculo.provider';
+import { NellikaServer } from '../../../../common/nellika-server';
+import { VehicleProvider } from '../../providers/vehicle.provider';
 
 export class VehiclesTimer {
-  protected brazucasServer: BrazucasServer;
+  protected brazucasServer: NellikaServer;
 
-  constructor(brazucasServer: BrazucasServer) {
+  constructor(brazucasServer: NellikaServer) {
     this.brazucasServer = brazucasServer;
 
     setInterval(() => {
-      this.atualizarPosicoes();
+      this.updatePositions();
     }, 5000);
   }
 
-  private atualizarPosicoes() {
+  private updatePositions() {
     mp.vehicles.forEach((vehicle) => {
-      VeiculoProvider.estacionar(vehicle);
+      VehicleProvider.park(vehicle);
     });
   }
 }

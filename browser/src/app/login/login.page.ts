@@ -3,7 +3,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IonInput, LoadingController, ToastController } from '@ionic/angular';
-import { AutenticacaoResultado } from '../../interfaces/login.interface';
+import { AuthenticationResult } from '../../interfaces/login.interface';
 import { LoginService } from '../services/login.service';
 import { RagempService } from '../services/ragemp.service';
 
@@ -15,11 +15,11 @@ declare let mp: any;
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements AfterViewInit {
-  @ViewChild('senha') campoSenha: IonInput;
-  public mostrarFormulario = true;
+  @ViewChild('senha') fieldPassword: IonInput;
+  public showForm = true;
 
   public formGroup = new FormGroup({
-    usuario: new FormControl({
+    user: new FormControl({
       value: '',
       disabled: true,
     }, {
@@ -28,7 +28,7 @@ export class LoginPage implements AfterViewInit {
         Validators.required,
       ],
     }),
-    senha: new FormControl('', {
+    password: new FormControl('', {
       validators: [
         Validators.required,
       ],
@@ -45,7 +45,7 @@ export class LoginPage implements AfterViewInit {
   }
 
   async ngAfterViewInit() {
-    this.campoSenha.setFocus();
+    this.fieldPassword.setFocus();
   }
 
   public async login() {
@@ -54,16 +54,16 @@ export class LoginPage implements AfterViewInit {
     try {
       loading.present();
 
-      const autenticacaoResultado: AutenticacaoResultado = await this.loginService.login(this.formGroup.value);
+      const authenticationResult: AuthenticationResult = await this.loginService.login(this.formGroup.value);
 
-      if (!autenticacaoResultado.autenticado) {
-        throw autenticacaoResultado;
+      if (!authenticationResult.authenticated) {
+        throw authenticationResult;
       }
 
-      this.mostrarFormulario = false;
+      this.showForm = false;
 
       const toast = await this.toastCtrl.create({
-        message: 'Autenticado com sucesso!',
+        message: 'Successfully Authenticated!',
         position: 'top',
         color: 'success',
         duration: 3000,
@@ -82,7 +82,7 @@ export class LoginPage implements AfterViewInit {
       loading.dismiss();
 
       const toast = await this.toastCtrl.create({
-        message: err.credenciaisInvalidas ? 'Credenciais Inválidas' : 'Um erro ocorreu ao autenticar',
+        message: err.credenciaisInvalidas ? 'Invalid Credentials' : 'An error occurred while authenticating',
         position: 'top',
         color: 'danger',
         duration: 3000

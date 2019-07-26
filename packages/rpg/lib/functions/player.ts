@@ -1,13 +1,13 @@
-import { BrazucasEventos, ServerEvent } from '../../interfaces/brazucas-eventos';
+import { NellikaEvents, ServerEvent } from '../../interfaces/nellika-events';
 
-export function notificarTodos(text: string) {
+export function notifyAll(text: string) {
   mp.players.forEach(player => player.notify(text));
 }
 
 export function playerEvent<T>(player: PlayerMp, event: string, data?: T, eventId?: number) {
-  console.debug(`[PLAYER EVENT] ${player.name} chamou o evento ${event} (ID ${eventId}) com os seguintes dados: ${JSON.stringify(data)}`);
+  console.debug(`[PLAYER EVENT] ${player.name} called the event ${event} (ID ${eventId}) with the following data: ${JSON.stringify(data)}`);
 
-  player.call(BrazucasEventos.SERVER, [<ServerEvent<T>> {
+  player.call(NellikaEvents.SERVER, [<ServerEvent<T>> {
     eventId: eventId,
     event: event,
     data: data,
@@ -15,9 +15,9 @@ export function playerEvent<T>(player: PlayerMp, event: string, data?: T, eventI
 }
 
 export function playersEvent<T>(event: string, data?: T, eventId?: number) {
-  console.debug(`[ALL PLAYER EVENT] Evento ${event} (ID ${eventId}) com os seguintes dados: ${JSON.stringify(data)} disparado para ${mp.players.length} jogadores.`);
+  console.debug(`[ALL PLAYER EVENT] Event ${event} (ID ${eventId}) with the following data: ${JSON.stringify(data)} fired to ${mp.players.length} jogadores.`);
 
-  mp.players.call(BrazucasEventos.SERVER, [<ServerEvent<T>> {
+  mp.players.call(NellikaEvents.SERVER, [<ServerEvent<T>> {
     eventId: eventId,
     event: event,
     data: data,

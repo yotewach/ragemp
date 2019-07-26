@@ -1,35 +1,35 @@
 import { Injectable } from '@angular/core';
-import { BrazucasEventos } from '../../../../packages/rpg/interfaces/brazucas-eventos';
-import { AutenticacaoResultado } from '../../interfaces/login.interface';
+import { NellikaEvents } from '../../../../packages/rpg/interfaces/nellika-events';
+import { AuthenticationResult } from '../../interfaces/login.interface';
 import { RagempService } from './ragemp.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class VeiculoService {
+export class VehicleService {
 
   constructor(public ragemp: RagempService) {
   }
 
-  public criarVeiculo(dados: DadosVeiculo): Promise<AutenticacaoResultado> {
-    return this.ragemp.callRagempEvent(BrazucasEventos.CRIAR_VEICULO, dados);
+  public criarVeiculo(dados: DataVehicle): Promise<AuthenticationResult> {
+    return this.ragemp.callRagempEvent(NellikaEvents.CRIAR_VEICULO, dados);
   }
 }
 
-export interface DadosVeiculo {
-  modelo: string,
-  corPrimaria: string,
-  corSecundaria: string,
-  placa: string,
-  proprietario: string,
-  posicaoX: string,
-  posicaoY: string,
-  posicaoZ: string,
-  trancado: boolean,
+export interface DataVehicle {
+  model: string,
+  colorPrimary: string,
+  colorSecondary: string,
+  board: string,
+  owner: string,
+  positionX: string,
+  positionY: string,
+  positionZ: string,
+  locked: boolean,
   motor: boolean,
-  transparencia: number,
-  tamanho: string,
-  valorOriginal: number,
-  valorVenda: number,
-  aVenda: boolean,
+  transparency: number,
+  size: string,
+  originalValue: number,
+  saleValue: number,
+  forSale: boolean,
 }

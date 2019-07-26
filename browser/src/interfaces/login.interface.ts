@@ -1,24 +1,24 @@
-import { Jogador } from './jogador.interface';
+import { Player } from './player.interface';
 
-export interface AutenticacaoResultado {
-  autenticado: boolean;
-  credenciaisInvalidas?: boolean;
+export interface AuthenticationResult {
+  authenticated: boolean;
+  credentialsInvalid?: boolean;
 }
 
-export interface RegistroResultado {
-  registrado: boolean;
-  erro?: boolean;
-  mensagem?: string;
-  jogador?: Jogador;
+export interface ResultRecord {
+  registered: boolean;
+  error?: boolean;
+  message?: string;
+  player?: Player;
 }
 
-export interface DadosLogin {
-  senha: string;
+export interface DataLogin {
+  password: string;
 }
 
-export interface DadosRegistro {
+export interface DataRegistration {
   email: string,
-  celular: string,
-  senha: string,
-  senhaConfirma: string,
+  phone: string,
+  password: string,
+  passwordConfirm: string,
 }

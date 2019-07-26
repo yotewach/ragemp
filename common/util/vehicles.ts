@@ -1,4 +1,4 @@
-export enum Veiculos {
+export enum Vehicles {
   ADDER = 0xB779A091,
   AIRBUS = 0x4C80EB0E,
   AIRTUG = 0x5D0AAC8F,

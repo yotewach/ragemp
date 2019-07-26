@@ -1,83 +1,83 @@
-import { BrazucasServer } from '../../../../common/brazucas-server';
+import { NellikaServer } from '../../../../common/nellika-server';
 import { Rpg } from '../../rpg';
 
-const FOME_DEFAULT_DECREASE = 1;
-const SEDE_DEFAULT_DECREASE = 1;
-const SONO_DEFAULT_DECREASE = 1;
-const FORCA_FISICA_DEFAULT_DECREASE = 1;
+const HUNGER_DEFAULT_DECREASE = 1;
+const THIRST_DEFAULT_DECREASE = 1;
+const SLEEP_DEFAULT_DECREASE = 1;
+const PHYSICAL_STRENGTH_DEFAULT_DECREASE = 1;
 
 export class PlayerTimer {
-  protected brazucasServer: BrazucasServer;
+  protected nellikaServer: NellikaServer;
 
-  constructor(brazucasServer: BrazucasServer) {
-    this.brazucasServer = brazucasServer;
+  constructor(nellikaServer: NellikaServer) {
+    this.nellikaServer = nellikaServer;
 
-    setInterval(() => this.atualizarFome(), 60000);
-    setInterval(() => this.atualizarSede(), 45000);
-    setInterval(() => this.atualizarSono(), 180000);
-    setInterval(() => this.atualizarForcaFisica(), 200000);
+    setInterval(() => this.updateHunger(), 60000);
+    setInterval(() => this.updateHead(), 45000);
+    setInterval(() => this.refreshSleep(), 180000);
+    setInterval(() => this.upgradePhysicalForce(), 200000);
   }
 
-  private atualizarFome() {
+  private updateHunger() {
     mp.players.forEach(playerMp => {
-      const brzPlayer = Rpg.playerProvider.findFromMp(playerMp);
+      const nlkPlayer = Rpg.playerProvider.findFromMp(playerMp);
 
-      const updatedValue = Math.max(brzPlayer.storage.fome - FOME_DEFAULT_DECREASE, 0);
+      const updatedValue = Math.max(nlkPlayer.storage.hunger - HUNGER_DEFAULT_DECREASE, 0);
 
       if (updatedValue === 0) {
         playerMp.health -= 1;
       }
 
       Rpg.playerProvider.update(playerMp, {
-        fome: updatedValue,
+        hunger: updatedValue,
       });
     });
   }
 
-  private atualizarSede() {
+  private updateHead() {
     mp.players.forEach(playerMp => {
-      const brzPlayer = Rpg.playerProvider.findFromMp(playerMp);
+      const nlkPlayer = Rpg.playerProvider.findFromMp(playerMp);
 
-      const updatedValue = Math.max(brzPlayer.storage.sede - SEDE_DEFAULT_DECREASE, 0);
+      const updatedValue = Math.max(nlkPlayer.storage.thirst - THIRST_DEFAULT_DECREASE, 0);
 
       if (updatedValue === 0) {
-        brzPlayer.storage.fome -= 1;
+        nlkPlayer.storage.hunger -= 1;
       }
 
       Rpg.playerProvider.update(playerMp, {
-        sede: updatedValue,
+        thirst: updatedValue,
       });
     });
   }
 
-  private atualizarSono() {
+  private refreshSleep() {
     mp.players.forEach(playerMp => {
-      const brzPlayer = Rpg.playerProvider.findFromMp(playerMp);
+      const nlkPlayer = Rpg.playerProvider.findFromMp(playerMp);
 
-      const updatedValue = Math.max(brzPlayer.storage.sono - SONO_DEFAULT_DECREASE, 0);
+      const updatedValue = Math.max(nlkPlayer.storage.sleep - SLEEP_DEFAULT_DECREASE, 0);
 
       if (updatedValue === 0) {
-        // @TODO fazer o jogador dormir
+        // @All make the player sleep
       }
 
       Rpg.playerProvider.update(playerMp, {
-        sono: updatedValue,
+        sleep: updatedValue,
       });
     });
   }
 
-  private atualizarForcaFisica() {
+  private upgradePhysicalForce() {
     mp.players.forEach(playerMp => {
-      const brzPlayer = Rpg.playerProvider.findFromMp(playerMp);
+      const nlkPlayer = Rpg.playerProvider.findFromMp(playerMp);
 
-      const updatedValue = Math.max(brzPlayer.storage.forcaFisica - FORCA_FISICA_DEFAULT_DECREASE, 0);
+      const updatedValue = Math.max(nlkPlayer.storage.physicalStrength - PHYSICAL_STRENGTH_DEFAULT_DECREASE, 0);
 
       if (updatedValue === 0) {
-        // @TODO O que fazer quando chegar a zero?
+        // @What to do when you get to zero?
       }
 
       Rpg.playerProvider.update(playerMp, {
-        forcaFisica: updatedValue,
+        physicalStrength: updatedValue,
       });
     });
   }

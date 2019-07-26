@@ -1,4 +1,4 @@
-export interface Jogador {
+export interface Player {
   nome: string,
   email: string,
   celular: string,

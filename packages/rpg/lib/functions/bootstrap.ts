@@ -1,42 +1,42 @@
 ///<reference path="../../../../node_modules/@types/ragemp-s/index.d.ts" />
 
-import { BrazucasServer } from '../../../../common/brazucas-server';
-import { Veiculo } from '../../../../common/database/models/Veiculo';
-import { Veiculos } from '../../../../common/util/vehicles';
-import { VeiculoProvider } from '../../providers/veiculo.provider';
+import { NellikaServer } from '../../../../common/nellika-server';
+import { Vehicle } from '../../../../common/database/models/Vehicle';
+import { Vehicles } from '../../../../common/util/vehicles';
+import { VehicleProvider } from '../../providers/vehicle.provider';
 import { PlayerTimer } from '../timers/player-timer';
 import { VehiclesTimer } from '../timers/vehicles-timer';
 
 declare const mp: Mp;
 
 export async function carregarVeiculos() {
-  let veiculos = await Veiculo.findAll();
+  let vehicles = await Vehicle.findAll();
 
-  veiculos.forEach((veiculo) => {
-    const veiculoMp = mp.vehicles.new(Veiculos[veiculo.modelo], new mp.Vector3(
-      parseFloat(veiculo.posicaoX),
-      parseFloat(veiculo.posicaoY),
-      parseFloat(veiculo.posicaoZ)
+  vehicles.forEach((vehicle) => {
+    const vehicleMp = mp.vehicles.new(Vehicles[vehicle.model], new mp.Vector3(
+      parseFloat(vehicle.positionX),
+      parseFloat(vehicle.positionY),
+      parseFloat(vehicle.positionZ)
     ));
 
-    veiculoMp.setColorRGB(veiculo.corPrimariaR, veiculo.corPrimariaG, veiculo.corPrimariaB, veiculo.corSecundariaR,
-      veiculo.corSecundariaG, veiculo.corSecundariaB);
+    vehicleMp.setColorRGB(vehicle.corPrimariaR, vehicle.corPrimariaG, vehicle.corPrimariaB, vehicle.corSecundariaR,
+      vehicle.corSecundariaG, vehicle.corSecundariaB);
 
-    veiculoMp.locked = veiculo.trancado;
-    veiculoMp.engine = veiculo.motor;
+    vehicleMp.locked = vehicle.trancado;
+    vehicleMp.engine = vehicle.motor;
     // veiculoMp.dimension = veiculo.mundo;
-    veiculoMp.numberPlate = veiculo.placaExibido;
+    vehicleMp.numberPlate = vehicle.placaExibido;
 
-    veiculoMp.spawn(veiculoMp.position, 0);
+    vehicleMp.spawn(vehicleMp.position, 0);
 
-    VeiculoProvider.veiculos.next({
-      mp: veiculoMp,
-      storage: veiculo,
+    VehicleProvider.vehicles.next({
+      mp: vehicleMp,
+      storage: vehicle,
     });
   });
 }
 
-export async function carregarTimers(brazucasServer: BrazucasServer) {
+export async function carregarTimers(brazucasServer: NellikaServer) {
   new VehiclesTimer(brazucasServer);
   new PlayerTimer(brazucasServer);
 }

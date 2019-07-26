@@ -1,37 +1,37 @@
 ///<reference path="../../../../node_modules/@types/ragemp-s/index.d.ts" />
 
-import { BrazucasServer } from '../../../../common/brazucas-server';
-import { BrazucasEventos } from '../../interfaces/brazucas-eventos';
+import { NellikaServer } from '../../../../common/nellika-server';
+import { NellikaEvents } from '../../interfaces/nellika-events';
 import { playerEvent } from '../functions/player';
 import { ComandosAdmin } from './comandos-admin';
 
 export class Commands extends ComandosAdmin {
 
-  constructor(brazucasServer: BrazucasServer) {
-    super(brazucasServer);
+  constructor(nellikaServer: NellikaServer) {
+    super(nellikaServer);
   }
 
   public dararma(player: PlayerMp, weaponHash: string) {
-    console.debug(`[COMANDOS - dararma] Dando arma ${weaponHash} para o jogador ${player.name}`);
+    console.debug(`[COMMANDS - dararma] Giving weapon ${weaponHash} for the player ${player.name}`);
 
     const asset = mp.joaat(weaponHash);
 
     player.giveWeapon(asset, 1000);
 
-    player.notify(`Arma ${weaponHash} recebida!`);
+    player.notify(`Weapon ${weaponHash} received!`);
   }
 
   public posicaoatual(player: PlayerMp) {
-    console.debug(`[COMANDOS - posicaoatual] Posição atual de ${player.name}: ${player.position.toString()}`);
+    console.debug(`[COMMANDS - current position] Current position for ${player.name}: ${player.position.toString()}`);
 
     player.outputChatBox(`Posição atual: ${player.position.toString()}`);
   }
 
   public browser(player: PlayerMp) {
-    playerEvent<any>(player, BrazucasEventos.INICIAR_NAVEGADOR);
+    playerEvent<any>(player, NellikaEvents.INICIAR_NAVEGADOR);
   }
 
   public cursor(player: PlayerMp) {
-    playerEvent<any>(player, BrazucasEventos.CURSOR);
+    playerEvent<any>(player, NellikaEvents.CURSOR);
   }
 }

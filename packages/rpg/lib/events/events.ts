@@ -1,37 +1,37 @@
-import { DadosVeiculo } from '../../../../browser/src/app/services/veiculo.service';
-import { DadosLogin, DadosRegistro, RegistroResultado } from '../../../../browser/src/interfaces/login.interface';
-import { BrazucasServer } from '../../../../common/brazucas-server';
-import { Jogador } from '../../../../common/database/models/Jogador';
+import { DataVehicle } from '../../../../browser/src/app/services/veiculo.service';
+import { DataLogin, DataRegistration, ResultRecord } from '../../../../browser/src/interfaces/login.interface';
+import { NellikaServer } from '../../../../common/nellika-server';
+import { Player } from '../../../../common/database/models/Player';
 import { environment } from '../../../../common/environment';
-import { BrazucasEventos } from '../../interfaces/brazucas-eventos';
+import { NellikaEvents } from '../../interfaces/nellika-events';
 import { VoiceChatProvider } from '../../providers/voice-chat.provider';
 import { Rpg } from '../../rpg';
 import { playerEvent } from '../functions/player';
 
 export class Events {
-  protected brazucasServer: BrazucasServer;
+  protected brazucasServer: NellikaServer;
 
-  constructor(brazucasServer: BrazucasServer) {
+  constructor(brazucasServer: NellikaServer) {
     this.brazucasServer = brazucasServer;
   }
 
-  public async [BrazucasEventos.AUTENTICAR_JOGADOR](player: PlayerMp, dados: DadosLogin) {
+  public async [NellikaEvents.AUTENTICAR_JOGADOR](playerMp: PlayerMp, dados: DataLogin) {
     try {
-      const jogador: Jogador = await this.brazucasServer.autenticarJogador(player.name, dados.senha);
+      const player: Player = await this.brazucasServer.autenticarJogador(playerMp.name, dados.password);
 
-      if (jogador) {
-        player.spawn(environment.posicaoLogin);
+      if (player) {
+        playerMp.spawn(environment.posicaoLogin);
 
-        await Rpg.playerProvider.update(player, jogador.toJSON());
+        await Rpg.playerProvider.update(playerMp, player.toJSON());
 
         return {
-          eventoResposta: 'AutenticacaoResultado',
+          eventoResposta: 'AuthenticationResult',
           credenciaisInvalidas: false,
           autenticado: true,
         };
       } else {
         return {
-          eventoResposta: 'AutenticacaoResultado',
+          eventoResposta: 'AuthenticationResult',
           credenciaisInvalidas: true,
           autenticado: false,
         };
@@ -40,58 +40,58 @@ export class Events {
       console.error(err.toString());
 
       return {
-        eventoResposta: 'AutenticacaoResultado',
+        eventoResposta: 'AuthenticationResult',
         credenciaisInvalidas: false,
         autenticado: false,
       };
     }
   }
 
-  public async [BrazucasEventos.REGISTRAR_JOGADOR](player: PlayerMp, dados: DadosRegistro) {
+  public async [NellikaEvents.REGISTRAR_JOGADOR](playerMp: PlayerMp, dados: DataRegistration) {
     try {
-      const jogador: Jogador = await this.brazucasServer.registrarJogador(player, dados);
+      const player: Player = await this.brazucasServer.registrarJogador(playerMp, dados);
 
-      if (jogador) {
-        player.spawn(environment.posicaoLogin);
+      if (player) {
+        playerMp.spawn(environment.posicaoLogin);
 
-        playerEvent<RegistroResultado>(player, BrazucasEventos.REGISTRO_RESULTADO, {
-          erro: false,
-          jogador: jogador,
-          registrado: true,
+        playerEvent<ResultRecord>(playerMp, NellikaEvents.REGISTRO_RESULTADO, {
+          error: false,
+          player: player,
+          registered: true,
         });
       } else {
-        playerEvent<RegistroResultado>(player, BrazucasEventos.REGISTRO_RESULTADO, {
-          registrado: false,
-          erro: true,
+        playerEvent<ResultRecord>(playerMp, NellikaEvents.REGISTRO_RESULTADO, {
+          registered: false,
+          error: true,
         });
       }
     } catch (err) {
-      console.debug(`[REGISTRO] Um erro ocorreu ao criar o jogador ${player.name}`);
+      console.debug(`[REGISTRATION] An error occurred while creating the player ${playerMp.name}`);
       console.error(err.toString());
 
-      playerEvent<RegistroResultado>(player, BrazucasEventos.REGISTRO_RESULTADO, {
-        registrado: false,
-        erro: true,
-        mensagem: err.toString() || 'Erro interno ao cadastrar',
+      playerEvent<ResultRecord>(playerMp, NellikaEvents.REGISTRO_RESULTADO, {
+        registered: false,
+        error: true,
+        message: err.toString() || 'Internal error registering',
       });
     }
   }
 
-  public async [BrazucasEventos.CRIAR_VEICULO](player: PlayerMp, dados: DadosVeiculo) {
+  public async [NellikaEvents.CRIAR_VEICULO](playerMp: PlayerMp, data: DataVehicle) {
     try {
-      await this.brazucasServer.criarVeiculo(player, dados);
+      await this.brazucasServer.criarVeiculo(playerMp, data);
     } catch (err) {
-      console.debug(`[VEÍCULOS] Um erro ocorreu ao criar o veículo`);
+      console.debug(`[VEHICLES] An error occurred while creating the vehicle`);
       console.error(err.toString());
 
       return false;
     }
   }
 
-  public async [BrazucasEventos.HABILITAR_VOICE_CHAT](player: PlayerMp, dados: any) {
-    console.log(`[VOICE CHAT] Ativando voice chat para ${player.name} com os dados: ${JSON.stringify(dados)}`);
+  public async [NellikaEvents.HABILITAR_VOICE_CHAT](playerMp: PlayerMp, data: any) {
+    console.log(`[VOICE CHAT] Enabling voice chat for ${playerMp.name} with the data: ${JSON.stringify(data)}`);
 
-    const target = mp.players.at(dados.targetId);
+    const target = playerMp.players.at(data.targetId);
 
     if (!target) {
       return {
@@ -100,10 +100,10 @@ export class Events {
       };
     }
 
-    VoiceChatProvider.habilitar(player, target);
+    VoiceChatProvider.habilitar(playerMp, target);
   }
 
-  public async [BrazucasEventos.DESABILITAR_VOICE_CHAT](player: PlayerMp, dados: any) {
+  public async [NellikaEvents.DESABILITAR_VOICE_CHAT](player: PlayerMp, dados: any) {
     console.log(`[VOICE CHAT] Desativando voice chat para ${player.name} com os dados: ${JSON.stringify(dados)}`);
 
     const target = mp.players.at(dados.targetId);
@@ -118,13 +118,13 @@ export class Events {
     VoiceChatProvider.desabilitar(player, target);
   }
 
-  public async [BrazucasEventos.ANIMACAO_VOICE_CHAT](player: PlayerMp) {
+  public async [NellikaEvents.ANIMACAO_VOICE_CHAT](player: PlayerMp) {
     console.log(`[VOICE CHAT] Aplicando animação para ${player.name}`);
 
     player.playAnimation('special_ped@baygor@monologue_3@monologue_3e', 'trees_can_talk_4', 1, 0);
   }
 
-  public async [BrazucasEventos.VISUALIZAR_ANIMACAO](player: PlayerMp, dados: {
+  public async [NellikaEvents.VISUALIZAR_ANIMACAO](player: PlayerMp, dados: {
     pacote: string,
     nome: string;
   }) {

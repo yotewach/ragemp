@@ -138,15 +138,15 @@ export enum DeathReason {
   VEHICLE_WEAPON_WATER_CANNON = 1741783703,
 }
 
-export function razaoMorte(razaoHash: number) {
-  console.log('>>>> razaoMorte ', razaoHash);
+export function razaoMorte(ratioHash: number) {
+  console.log('>>>> death ', ratioHash);
   const deathReason = EnumToArray(DeathReason);
 
-  const razaoMorte = deathReason.find((reason) => reason === razaoHash);
+  const death = deathReason.find((reason) => reason === ratioHash);
 
-  if (!razaoMorte) {
-    return 'Desconhecido';
+  if (!death) {
+    return 'Unknown';
   } else {
-    return Object.keys(razaoMorte)[0];
+    return Object.keys(death)[0];
   }
 }

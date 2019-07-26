@@ -73,6 +73,7 @@ export class Vehicle extends Model<Vehicle> {
   @Column({allowNull: false, defaultValue: false})
   motor: boolean;
 
+  //maybe dimension
   @Column({allowNull: false, defaultValue: 1})
   world: number;
 
